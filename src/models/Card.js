@@ -13,6 +13,10 @@ const cardSchema = new mongoose.Schema({
     type: String,
     default: '',
   },
+  photoUri: {
+    type: String,
+    default: '',
+  },
 });
 
 mongoose.model('Card', cardSchema);

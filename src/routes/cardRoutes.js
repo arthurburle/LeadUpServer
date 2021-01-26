@@ -15,15 +15,20 @@ router.get('/cards', async (req, res) => {
 });
 
 router.post('/cards', async (req, res) => {
-  const { title, description } = req.body;
+  const { title, description, photoUri } = req.body;
 
-  if (!title || !description) {
+  if (!title || !description || !photoUri) {
     return res
       .status(422)
-      .send({ error: 'You must provide a title and a description' });
+      .send({ error: 'You must provide a title, a description and a photo' });
   }
   try {
-    const card = new Card({ title, description, userId: req.user._id });
+    const card = new Card({
+      title,
+      description,
+      photoUri,
+      userId: req.user._id,
+    });
     await card.save();
     res.send(card);
   } catch (err) {
@@ -32,18 +37,18 @@ router.post('/cards', async (req, res) => {
 });
 
 router.put('/cards/:id', async (req, res) => {
-  const { title, description } = req.body;
+  const { title, description, photoUri } = req.body;
 
-  if (!title || !description) {
+  if (!title || !description || !photoUri) {
     return res
       .status(422)
-      .send({ error: 'You must provide a title and a description' });
+      .send({ error: 'You must provide a title, a description and a photo' });
   }
 
   try {
     const card = await Card.findByIdAndUpdate(
       { _id: req.params.id },
-      { title, description, userId: req.user._id }
+      { title, description, photoUri, userId: req.user._id }
     );
     res.send(card);
   } catch (err) {
